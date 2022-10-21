@@ -1,30 +1,45 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class Pong extends JPanel {
-
+    /**
+     * The paddle that gets initialized on the left
+     */
     private static Paddle left_paddle;
+    /**
+     * The paddle that gets initialized on the right
+     */
     private static Paddle right_paddle;
 
+    /**
+     * The color of the rectangle that gets drawn over the canvas each refresh
+     */
     private final Color backgroundColor = Color.BLACK;
+    /**
+     * Initial Screen dimensions
+     */
     private static Dimension screenSize;
 
+    /**
+     * An ArrayList of entities so we can just call entities.update() in a loop
+     */
     static ArrayList<Entity> entities;
 
     public Pong() {
         entities = new ArrayList<>();
+        //initialize screen size
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        //create entities
+        //create entities -- left paddle
         left_paddle = new Paddle(Paddle.SIDE.L, screenSize);
         entities.add(left_paddle);
+
+        //right paddle
         right_paddle = new Paddle(Paddle.SIDE.R, screenSize);
         entities.add(right_paddle);
+
+        //the ball. Not yet implemented
         Ball b = new Ball();
         entities.add(b);
 
@@ -35,14 +50,15 @@ public class Pong extends JPanel {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                constructGame();
+                constructGame(); //<-- this is a wrapper method that allows us to refer to Pong fields non-statically
             }
         });
 
     }
     public void constructGame() {
+        //the frame holds the panel
         JFrame f = new JFrame();
-        this.setBackground(Color.BLACK);
+        this.setBackground(backgroundColor); //not sure what this does tbh
         f.add(this);
         f.setSize(screenSize);
         //this will get the ball rolling. It will eventually call our overridden paint method which is kind of like an entry point
@@ -65,9 +81,10 @@ public class Pong extends JPanel {
         startLoop(g2d);
     }
     public void startLoop(Graphics2D g2d) {
-        for(Entity e : entities) {
-            e.update(g2d);
-        }
+        left_paddle.update(g2d);
+        g2d.drawString(String.valueOf(left_paddle.getY_pos()), 200, 200);
+        right_paddle.update(g2d);
+
     }
 
 }

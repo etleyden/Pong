@@ -10,8 +10,7 @@ public class Paddle extends Entity {
 
     public Paddle(SIDE s, Dimension dimension) {
         super(dimension);
-        System.out.print("Constructor called");
-        setX_pos((s == SIDE.L) ? 0 : dimension.width - WIDTH);
+        setX_pos((s == SIDE.L) ? 10 : dimension.width - WIDTH - 10);
         setY_pos(100);
     }
 
@@ -34,12 +33,15 @@ public class Paddle extends Entity {
             this.addVelocity(0, -moveMagnitude);
         } else if(this.getMoveDirection() == DIRECTION.DOWN && Math.abs(this.getYVelocity()) < 10) {
             this.addVelocity(0, moveMagnitude);
-        } else if(this.getMoveDirection() == DIRECTION.STAT || !this.isWithinBounds()) { //trend to 0
-           this.setVelocity(0, 0);
+        } else if(this.getMoveDirection() == DIRECTION.STAT) { //trend to 0
+           this.setVelocity(0, (this.getYVelocity() > 1) ? 0.5 * this.getYVelocity() : 0);
         }
     }
     public void move() {
-
+        if(!isWithinBounds()) {
+            this.set_pos(this.getClosestBoundPoint());
+            this.setVelocity(0, 0);
+        }
         this.setY_pos(this.getY_pos() + this.getYVelocity());
     }
 

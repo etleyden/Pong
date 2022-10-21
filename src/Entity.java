@@ -7,6 +7,7 @@ public abstract class Entity {
     private double y_pos;
     private Color color;
     private Point2D.Double velocity;
+    private Point[] hitBox;
     private DIRECTION moveDirection;
     public enum DIRECTION {
         UP, DOWN, LEFT, RIGHT, STAT
@@ -27,14 +28,32 @@ public abstract class Entity {
     }
 
     public boolean isWithinBounds() {
-        System.out.println(bounds[0].y + ", " + y_pos + ", " + bounds[1].y);
-        return ((double)this.bounds[0].x < x_pos && x_pos < (double)bounds[1].x) && ((double)bounds[0].y < y_pos && y_pos < (double)bounds[1].y);
+        return isWithinXBounds() && isWithinYBounds();
+    }
+    public boolean isWithinXBounds() {
+        return ((double)this.bounds[0].x <= x_pos && x_pos <= (double)bounds[1].x);
+    }
+    public boolean isWithinYBounds() {
+        return ((double)bounds[0].y <= y_pos && y_pos<= (double)bounds[1].y);
+    }
+    public Point getClosestBoundPoint() {
+        if(isWithinYBounds()) return new Point((x_pos <= bounds[0].x) ? bounds[0].x : bounds[1].x, (int) y_pos);
+        if(isWithinXBounds()) return new Point((int)x_pos, (y_pos <= bounds[0].y) ? bounds[0].y : bounds[1].y);
+
+        //if out in the corner then we have a real problem -- functionality needed later on.
+        return new Point();
     }
     public Point2D.Double getPos() {return new Point2D.Double(x_pos, y_pos);}
     public double getX_pos() {return x_pos;}
     public double getY_pos() {return y_pos;}
     public void setX_pos(double x) {x_pos = x;}
-    public void setY_pos(double y) {y_pos = y;}
+    public void setY_pos(double y) {
+        y_pos = y;
+    }
+    public void set_pos(Point point) {
+        x_pos = point.x;
+        y_pos = point.y;
+    }
 
     public Color getColor() {
         return color;
