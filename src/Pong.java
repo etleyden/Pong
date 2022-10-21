@@ -11,7 +11,7 @@ public class Pong extends JPanel {
      * The paddle that gets initialized on the right
      */
     private static Paddle right_paddle;
-
+    private Ball ball;
     /**
      * The color of the rectangle that gets drawn over the canvas each refresh
      */
@@ -24,26 +24,25 @@ public class Pong extends JPanel {
     /**
      * An ArrayList of entities so we can just call entities.update() in a loop
      */
-    static ArrayList<Entity> entities;
+
+    boolean ballSpawned = false;
 
     public Pong() {
-        entities = new ArrayList<>();
         //initialize screen size
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         //create entities -- left paddle
         left_paddle = new Paddle(Paddle.SIDE.L, screenSize);
-        entities.add(left_paddle);
 
         //right paddle
         right_paddle = new Paddle(Paddle.SIDE.R, screenSize);
-        entities.add(right_paddle);
-
-        //the ball. Not yet implemented
-        Ball b = new Ball();
-        entities.add(b);
 
 
+
+
+    }
+    public Paddle[] getPaddles() {
+        return new Paddle[]{left_paddle, right_paddle};
     }
 
     public void init() {
@@ -65,7 +64,7 @@ public class Pong extends JPanel {
         f.setVisible(true);
 
         //add listeners
-        PlayerInput handler = new PlayerInput(left_paddle, right_paddle);
+        PlayerInput handler = new PlayerInput(this);
         f.addKeyListener(handler);
 
         //set the refresh
@@ -85,6 +84,15 @@ public class Pong extends JPanel {
         g2d.drawString(String.valueOf(left_paddle.getY_pos()), 200, 200);
         right_paddle.update(g2d);
 
+        if(ballSpawned) ball.update(g2d);
+
     }
 
+    public boolean isBallSpawned() {return ballSpawned;}
+    public void spawnBall() {
+        //flip a coin
+        ballSpawned = true;
+        int x_direction = (Math.floor(Math.random() * 2) == 0) ? -5 : 5;
+        ball = new Ball(x_direction, screenSize);
+    }
 }

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 public class PlayerInput implements KeyListener {
 
     Paddle left_paddle, right_paddle;
-
-    public PlayerInput(Paddle left_paddle, Paddle right_paddle) {
-        this.left_paddle = left_paddle;
-        this.right_paddle = right_paddle;
+    Pong p;
+    public PlayerInput(Pong p) {
+        this.p = p;
+        this.left_paddle = p.getPaddles()[0];
+        this.right_paddle = p.getPaddles()[1];
     }
 
     @Override
@@ -31,6 +32,8 @@ public class PlayerInput implements KeyListener {
             case KeyEvent.VK_DOWN:
                 right_paddle.down(true);
                 break;
+            case KeyEvent.VK_SPACE:
+                if(!p.isBallSpawned()) p.spawnBall();
 
         }
     }

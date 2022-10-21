@@ -74,6 +74,10 @@ public abstract class Entity {
     public Point2D.Double getVelocity() {
         return velocity;
     }
+    public void addPos(Point2D.Double vel) {
+        x_pos += vel.x;
+        y_pos += vel.y;
+    }
     public DIRECTION getMoveDirection() {
         return moveDirection;
     }
