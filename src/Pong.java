@@ -81,10 +81,26 @@ public class Pong extends JPanel {
     }
     public void startLoop(Graphics2D g2d) {
         left_paddle.update(g2d);
-        g2d.drawString(String.valueOf(left_paddle.getY_pos()), 200, 200);
+
         right_paddle.update(g2d);
 
-        if(ballSpawned) ball.update(g2d);
+        if(ballSpawned) {
+            ball.update(g2d);
+
+            ball.detectCollision(left_paddle);
+            ball.detectCollision(right_paddle);
+
+            //detect collision with top
+            ball.detectCollision(new Point[]{
+                    new Point(0, 0),
+                    new Point(screenSize.width, 0)});
+
+            //detect collision with bottom
+            ball.detectCollision(new Point[]{
+                    new Point(0, screenSize.height),
+                    new Point(screenSize.width, screenSize.height)
+            });
+        }
 
     }
 

@@ -5,15 +5,21 @@ public class Paddle extends Entity {
     private final int WIDTH = 10;
     private final int HEIGHT = 150;
     private final double moveMagnitude = 1.5;
-
+    private SIDE side;
 
 
     public Paddle(SIDE s, Dimension dimension) {
         super(dimension);
+        this.side = s;
         setX_pos((s == SIDE.L) ? 10 : dimension.width - WIDTH - 10);
         setY_pos(100);
     }
 
+    public SIDE getSide() {
+        return this.side;
+    }
+    public int getWidth() {return WIDTH;}
+    public int getHeight() {return HEIGHT;}
     @Override
     public void update(Graphics2D g) {
         this.move();
