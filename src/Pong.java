@@ -91,15 +91,10 @@ public class Pong extends JPanel {
             ball.detectCollision(right_paddle);
 
             //detect collision with top
-            ball.detectCollision(new Point[]{
-                    new Point(0, 0),
-                    new Point(screenSize.width, 0)});
+            ball.detectCollision(new Entity(0, 0, new Dimension(screenSize.width, 1)));
 
             //detect collision with bottom
-            ball.detectCollision(new Point[]{
-                    new Point(0, screenSize.height),
-                    new Point(screenSize.width, screenSize.height)
-            });
+            ball.detectCollision(new Entity(0, screenSize.height, new Dimension(screenSize.width, 1)));
         }
 
     }

@@ -13,6 +13,7 @@ public class Paddle extends Entity {
         this.side = s;
         setX_pos((s == SIDE.L) ? 10 : dimension.width - WIDTH - 10);
         setY_pos(100);
+        setHitBox(WIDTH, HEIGHT);
     }
 
     public SIDE getSide() {

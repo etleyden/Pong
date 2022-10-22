@@ -1,13 +1,13 @@
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class Entity {
+public class Entity {
     private Point[] bounds;
     private double x_pos;
     private double y_pos;
     private Color color;
     private Point2D.Double velocity;
-    private Point[] hitBox;
+    private Dimension hitBox;
     private DIRECTION moveDirection;
     public enum DIRECTION {
         UP, DOWN, LEFT, RIGHT, STAT
@@ -16,8 +16,10 @@ public abstract class Entity {
     public Entity(Dimension bounds) {
         this(50, 50, Color.WHITE, bounds);
     }
-    public Entity(int x, int y) {
+    public Entity(int x, int y, Dimension hitBox) {
+
         this(x, y, Color.WHITE, new Dimension(100, 100));
+        this.hitBox = hitBox;
     }
     public Entity(int x, int y, Color c, Dimension bounds) {
         x_pos = x;
@@ -26,7 +28,12 @@ public abstract class Entity {
         this.color = c;
         this.bounds = new Point[]{new Point(0, 0), new Point(bounds.width, bounds.height)};
     }
-
+    public void setHitBox(int x, int y) {
+        this.hitBox = new Dimension(x, y);
+    }
+    public int[] getDynamicHitBox() {
+        return new int[] {(int)x_pos, (int)y_pos,(int) x_pos+ hitBox.width,(int)y_pos+ hitBox.height};
+    }
     public boolean isWithinBounds() {
         return isWithinXBounds() && isWithinYBounds();
     }
@@ -77,6 +84,9 @@ public abstract class Entity {
     public void addPos(Point2D.Double vel) {
         x_pos += vel.x;
         y_pos += vel.y;
+    }
+    public int getHeight() {
+        return 0;
     }
     public DIRECTION getMoveDirection() {
         return moveDirection;
