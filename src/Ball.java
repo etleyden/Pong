@@ -54,10 +54,10 @@ public class Ball extends Entity {
     }
     public boolean detectScreenExit(Paddle l, Paddle r) {
         if(getX_pos() < 0) {
-            l.addPoint();
+            r.addPoint();
             return true;
         } else if(getX_pos() > bounds[1].x) {
-            r.addPoint();
+            l.addPoint();
             return true;
         }
         return false;

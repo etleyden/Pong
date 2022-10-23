@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class Paddle extends Entity {
     public enum SIDE {L,R}
-    private final int WIDTH = 10;
+    private final int WIDTH = 20;
     private final int HEIGHT = 150;
     private final double moveMagnitude = 1.5;
     private SIDE side;
@@ -12,7 +12,7 @@ public class Paddle extends Entity {
     public Paddle(SIDE s, Dimension dimension) {
         super(dimension);
         this.side = s;
-        setX_pos((s == SIDE.L) ? 10 : dimension.width - WIDTH - 10);
+        setX_pos((s == SIDE.L) ? 30 : dimension.width - WIDTH - 30);
         setY_pos(100);
         setHitBox(WIDTH, HEIGHT);
     }
@@ -35,7 +35,7 @@ public class Paddle extends Entity {
 
         g.setColor(getColor());
 
-        g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 36));
+        g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 72));
         g.drawString(String.valueOf(points), (side == SIDE.L) ? (bounds[1].x / 4) : (int)(bounds[1].x * 0.75), bounds[1].y / 4);
 
         g.fillRect((int)getX_pos(), (int)getY_pos(), WIDTH, HEIGHT);

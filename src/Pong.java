@@ -84,9 +84,21 @@ public class Pong extends JPanel {
         startLoop(g2d);
     }
     public void startLoop(Graphics2D g2d) {
+
+        //draw the dotted line
+        Stroke dashed = new BasicStroke(15, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                0, new float[]{15}, 0);
+
+        g2d.setStroke(dashed);
+        g2d.setColor(Color.WHITE);
+        g2d.drawLine(screenSize.width / 2, 0, screenSize.width / 2, screenSize.height);
+
         left_paddle.update(g2d);
 
         right_paddle.update(g2d);
+
+
+
 
         if(ballSpawned) {
             ball.update(g2d);
