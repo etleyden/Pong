@@ -44,7 +44,7 @@ public class Pong extends JPanel {
     public Paddle[] getPaddles() {
         return new Paddle[]{left_paddle, right_paddle};
     }
-
+    public Ball getBall() { return (ballSpawned) ? ball : new Ball();}
     public void init() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -60,9 +60,13 @@ public class Pong extends JPanel {
         this.setBackground(backgroundColor); //not sure what this does tbh
         f.add(this);
         f.setSize(screenSize);
-        //this will get the ball rolling. It will eventually call our overridden paint method which is kind of like an entry point
+         //this will get the ball rolling. It will eventually call our overridden paint method which is kind of like an entry point
         f.setVisible(true);
+        //update screensize to account for the size being beyond the max allowed for the given screen
+        screenSize = f.getSize();
 
+        left_paddle.setBounds(f.getSize());
+        right_paddle.setBounds(f.getSize());
         //add listeners
         PlayerInput handler = new PlayerInput(this);
         f.addKeyListener(handler);
@@ -91,10 +95,15 @@ public class Pong extends JPanel {
             ball.detectCollision(right_paddle);
 
             //detect collision with top
-            ball.detectCollision(new Entity(0, 0, new Dimension(screenSize.width, 1)));
+            ball.detectCollision(new Entity(0, -10, new Dimension(screenSize.width, 10)));
 
             //detect collision with bottom
-            ball.detectCollision(new Entity(0, screenSize.height, new Dimension(screenSize.width, 1)));
+            ball.detectCollision(new Entity(0, screenSize.height - ball.getHeight(), new Dimension(screenSize.width, 10)));
+
+            if(ball.detectScreenExit(left_paddle, right_paddle)) {
+                ball = null;
+                ballSpawned = false;
+            }
         }
 
     }

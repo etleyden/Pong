@@ -1,21 +1,23 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 public class PlayerInput implements KeyListener {
 
     Paddle left_paddle, right_paddle;
     Pong p;
+    Ball b;
     public PlayerInput(Pong p) {
         this.p = p;
         this.left_paddle = p.getPaddles()[0];
         this.right_paddle = p.getPaddles()[1];
+        this.b = p.getBall();
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
+
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -34,6 +36,7 @@ public class PlayerInput implements KeyListener {
                 break;
             case KeyEvent.VK_SPACE:
                 if(!p.isBallSpawned()) p.spawnBall();
+                break;
 
         }
     }
@@ -55,4 +58,5 @@ public class PlayerInput implements KeyListener {
                 break;
         }
     }
+
 }

@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Entity {
-    private Point[] bounds;
+    Point[] bounds;
     private double x_pos;
     private double y_pos;
     private Color color;
@@ -26,7 +26,7 @@ public class Entity {
         y_pos = y;
         velocity = new Point2D.Double(0, 0);
         this.color = c;
-        this.bounds = new Point[]{new Point(0, 0), new Point(bounds.width, bounds.height)};
+        setBounds(bounds);
     }
     public void setHitBox(int x, int y) {
         this.hitBox = new Dimension(x, y);
@@ -41,11 +41,11 @@ public class Entity {
         return ((double)this.bounds[0].x <= x_pos && x_pos <= (double)bounds[1].x);
     }
     public boolean isWithinYBounds() {
-        return ((double)bounds[0].y <= y_pos && y_pos<= (double)bounds[1].y);
+        return ((double)bounds[0].y <= y_pos && y_pos <= (double)bounds[1].y);
     }
     public Point getClosestBoundPoint() {
         if(isWithinYBounds()) return new Point((x_pos <= bounds[0].x) ? bounds[0].x : bounds[1].x, (int) y_pos);
-        if(isWithinXBounds()) return new Point((int)x_pos, (y_pos <= bounds[0].y) ? bounds[0].y : bounds[1].y);
+        if(isWithinXBounds()) return new Point((int)x_pos, (y_pos <= bounds[0].y) ? bounds[0].y : (bounds[1].y - getHeight()));
 
         //if out in the corner then we have a real problem -- functionality needed later on.
         return new Point();
@@ -61,7 +61,9 @@ public class Entity {
         x_pos = point.x;
         y_pos = point.y;
     }
-
+    public void setBounds(Dimension bounds) {
+        this.bounds = new Point[]{new Point(0,0),new Point(bounds.width, bounds.height)};
+    }
     public Color getColor() {
         return color;
     }

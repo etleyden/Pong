@@ -10,6 +10,7 @@ public class Ball extends Entity {
     //we're gonna override the bounds functionality for paddles and
     //have solid bounds (where it reflects) and soft bounds (where it despawns and changes the points);
     private ArrayList<Point[]> solidBounds;
+    private String message = "";
 
     public Ball() {
         super(new Dimension());
@@ -27,7 +28,6 @@ public class Ball extends Entity {
     }
     public void update(Graphics2D g) {
         this.move();
-
         g.setColor(COLOR);
         g.fillOval((int) getX_pos(), (int) getY_pos(), RADIUS, RADIUS);
     }
@@ -46,10 +46,23 @@ public class Ball extends Entity {
                 //find the distance from the center of the paddle.
                 int centerOfPaddle = hitBoxE[3] - (e.getHeight() / 2);
                 int centerOfBall = ourHitBox[3] - (this.getHeight() / 2);
-                this.addVelocity(-2 * getXVelocity(), 0.1 * (centerOfBall - centerOfPaddle));
+                this.setVelocity(-getXVelocity(), 0.1 * (centerOfBall - centerOfPaddle));
             } else {
                 this.setVelocity(getXVelocity(), -getYVelocity());
             }
         }
+    }
+    public boolean detectScreenExit(Paddle l, Paddle r) {
+        if(getX_pos() < 0) {
+            l.addPoint();
+            return true;
+        } else if(getX_pos() > bounds[1].x) {
+            r.addPoint();
+            return true;
+        }
+        return false;
+    }
+    public void setMessage(String str) {
+        this.message = str;
     }
 }

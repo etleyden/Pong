@@ -7,6 +7,7 @@ public class Paddle extends Entity {
     private final double moveMagnitude = 1.5;
     private SIDE side;
 
+    private int points = 0;
 
     public Paddle(SIDE s, Dimension dimension) {
         super(dimension);
@@ -16,6 +17,12 @@ public class Paddle extends Entity {
         setHitBox(WIDTH, HEIGHT);
     }
 
+    public void addPoint() {
+        points++;
+    }
+    public int getPoints() {
+        return points;
+    }
     public SIDE getSide() {
         return this.side;
     }
@@ -27,6 +34,10 @@ public class Paddle extends Entity {
         this.updateVelocity();
 
         g.setColor(getColor());
+
+        g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 36));
+        g.drawString(String.valueOf(points), (side == SIDE.L) ? (bounds[1].x / 4) : (int)(bounds[1].x * 0.75), bounds[1].y / 4);
+
         g.fillRect((int)getX_pos(), (int)getY_pos(), WIDTH, HEIGHT);
     }
     public void up(boolean active) {
@@ -44,6 +55,11 @@ public class Paddle extends Entity {
            this.setVelocity(0, (this.getYVelocity() > 1) ? 0.5 * this.getYVelocity() : 0);
         }
     }
+    @Override
+    public boolean isWithinYBounds() {
+        return ((double)bounds[0].y <= getY_pos() && getY_pos() + getHeight() <= (double)bounds[1].y);
+    }
+
     public void move() {
         if(!isWithinBounds()) {
             this.set_pos(this.getClosestBoundPoint());
